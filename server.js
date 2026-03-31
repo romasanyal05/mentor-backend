@@ -10,7 +10,7 @@ const server = http.createServer(app);
 
 // ✅ YJS CRDT 
 const WebSocket = require("ws")
-const { setupWSConnection } = require("y-websocket")
+const { setupWSConnection } = require("y-websocket/bin/utils").setupWSConnection
 
 const wss = new WebSocket.Server({ noServer: true })
 
