@@ -23,7 +23,6 @@ io.on("connection", (socket) => {
 
   socket.on("join-session", (sessionId) => {
     socket.join(sessionId)
-    console.log(`User joined session: ${sessionId}`)
   })
 
   socket.on("code-change", ({ code, sessionId }) => {
@@ -34,11 +33,19 @@ io.on("connection", (socket) => {
     socket.to(data.sessionId).emit("receive-message", data)
   })
 
+  // 🔥 ADD THIS
+  socket.on("call-user",(data)=>{
+    socket.to(data.sessionId).emit("call-made",data)
+  })
+
+  socket.on("answer-call",(data)=>{
+    socket.to(data.sessionId).emit("call-answered",data.signal)
+  })
+
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id)
   })
 })
-
 // TEST ROUTE
 app.get("/", (req, res) => {
   res.send("Backend running 🚀")
