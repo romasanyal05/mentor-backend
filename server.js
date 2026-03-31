@@ -34,13 +34,16 @@ io.on("connection", (socket) => {
   })
 
   // 🔥 ADD THIS
-  socket.on("call-user",(data)=>{
-    socket.to(data.sessionId).emit("call-made",data)
+  socket.on("call-user", (data) => {
+  socket.broadcast.emit("call-made", {
+    signal: data.signal,
+    from: socket.id
   })
+})
 
-  socket.on("answer-call",(data)=>{
-    socket.to(data.sessionId).emit("call-answered",data.signal)
-  })
+socket.on("answer-call", (data) => {
+  socket.broadcast.emit("call-answered", data.signal)
+})
 
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id)
