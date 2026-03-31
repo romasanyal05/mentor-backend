@@ -8,6 +8,19 @@ app.use(express.json());
 
 const server = http.createServer(app);
 
+// ✅ YJS CRDT 
+const WebSocket = require("ws")
+const { setupWSConnection } = require("y-websocket")
+
+const wss = new WebSocket.Server({ noServer: true })
+
+server.on("upgrade", (request, socket, head) => {
+  if (request.url.startsWith("/yjs")) {
+    wss.handleUpgrade(request, socket, head, (ws) => {
+      setupWSConnection(ws, request)
+    })
+  }
+})
 const io = new Server(server,{
   cors:{
     origin:"*"
